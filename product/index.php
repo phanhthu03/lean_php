@@ -1,8 +1,11 @@
 <?php
     require_once "pdo.php";
     require_once "../category/pdo.php";
-    $prod = getProdData();
-    $cate = getData();
+    $productConnection = new ProductConnection();
+    $categoryConnection = new CategoryConnection();
+
+    $category = $categoryConnection->getData();
+    $prod = $productConnection->getProdData(); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
