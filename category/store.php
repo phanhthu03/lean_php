@@ -1,6 +1,8 @@
 <?php
     require_once 'pdo.php';
+    $categoryConnection = new CategoryConnection();
     $data = ['name' => $_POST['name']];
-    createNewData($data);
+    $categoryConnection->createNewData($data);
+
     header("Location: http://localhost/lean_php/category/index.php");
 ?>
