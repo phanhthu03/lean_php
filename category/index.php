@@ -1,6 +1,7 @@
 <?php
     require_once "pdo.php";
-    $category = getData();
+    $categoryConnection= new CategoryConnection();
+    $category=$categoryConnection->getData();
 ?>
 
 <!DOCTYPE html>
