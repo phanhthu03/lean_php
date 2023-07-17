@@ -1,6 +1,5 @@
 <?php
     require_once "pdo.php";
-    require_once "../category/pdo.php";
 
     $categoryConnection = new CategoryConnection();
     $cateArrs = $categoryConnection->getData();
