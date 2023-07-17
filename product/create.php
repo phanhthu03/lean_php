@@ -1,7 +1,8 @@
 <?php
     require_once "pdo.php";
     require_once "../category/pdo.php";
-    $cate = getData();
+    $categoryConnection = new CategoryConnection();
+    $cate = $categoryConnection->getData();
 ?>
 <!DOCTYPE html>
 <html lang="en">
