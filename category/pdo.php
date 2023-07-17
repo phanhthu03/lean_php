@@ -1,40 +1,67 @@
 <?php
-    $conn = new PDO('mysql:host=localhost;dbname=test','root', '');
-    $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+abstract class Connection {
+    protected $host;
+    protected $db;
+    protected $username;
+    protected $password;
+    protected $connection;
 
-    function prepareSQL($sql){
-        global $conn;
-        return $conn->prepare($sql);
+    public function __construct() {
+        $this->host = 'localhost';
+        $this->db = 'test';
+        $this->username = 'root';
+        $this->password = '';
+        $this->connection = $this->connect();
     }
-    
-    function getData(){
+
+    public function connect() {
+        try {
+            $conn = new PDO("mysql:host={$this->host};dbname={$this->db}", $this->username, $this->password);
+
+            $conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+            return $conn;
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+    }
+
+    public function prepareSQL($sql) {
+        return $this->connection->prepare($sql);
+    }
+}
+
+class CategoryConnection extends Connection {
+    public function getData() {
         $sql = "SELECT * FROM category";
-        $select = prepareSQL($sql);
+        $select = $this->prepareSQL($sql);
         $select->execute();
         return $select->fetchAll();
     }
 
-    function getOneData($data){
+    public function getOneData($data) {
         $sql = "SELECT * FROM category WHERE id = :id";
-        $select = prepareSQL($sql);
+        $select = $this->prepareSQL($sql);
         $select->execute($data);
         return $select->fetchAll();
     }
 
-    function createNewData($data){
+    public function createNewData($data) {
         $sql = "INSERT INTO category (name) VALUES (:name)";
-        $create = prepareSQL($sql);
+        $create = $this->prepareSQL($sql);
         $create->execute($data);
     }
 
-    function updateData($data){
+    public function updateData($data) {
         $sql = "UPDATE category SET name = :name WHERE id = :id";
-        $update = prepareSQL($sql);
+        $update = $this->prepareSQL($sql);
         $update->execute($data);
     }
-    function deleteData($data){
+
+    public function deleteData($data) {
         $sql = "DELETE FROM category WHERE id = :id";
-        $update = prepareSQL($sql);
+        $update = $this->prepareSQL($sql);
         $update->execute($data);
     }
+}
+
 ?>
