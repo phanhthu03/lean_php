@@ -1,5 +1,6 @@
 <?php
     require_once 'pdo.php';
+    $categoryConnection = new CategoryConnection();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +12,6 @@
     <div class="container mt-3">
         <h3>Update Category</h3>
         <?php 
-       $categoryConnection = new CategoryConnection();
             $data = [
                 'id' => $_GET['id']
             ];
