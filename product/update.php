@@ -1,7 +1,11 @@
 <?php
     require_once "pdo.php";
-    $cateArrs = getData();
+    require_once "../category/pdo.php";
+
+    $categoryConnection = new CategoryConnection();
+    $cateArrs = $categoryConnection->getData();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,11 +20,12 @@
             $prodId = [
                 'id' => $_GET['id']
             ];
-            $prodArr = getOneProdData($prodId)[0];
+            $productConnection = new ProductConnection();
+            $prodArr = $productConnection->getOneProdData($prodId)[0];
             $cateId = [
                 'id' => $prodArr['cateId']
             ];
-            $cateArr = getOneData($cateId);
+            $cateArr = $categoryConnection->getOneData($cateId);
         ?>
         <form action="action.php?id=<?=$prodArr['prodId'] ?>" method="POST">
         <div class="mb-3">
@@ -36,12 +41,15 @@
             <select class="form-select" aria-label="Default select example" name="cateId">
                 <option selected value="<?= $cateArr[0]['id']?>"><?= $cateArr[0]['name']?></option>
                 <?php 
-                    foreach($cateArrs as $dataCate)
-                        if($dataCate['id'] == $cateArr['id'])
-                            continue;                             
-                        else{?>
+                    foreach($cateArrs as $dataCate) {
+                        if ($dataCate['id'] == $cateArr[0]['id']) {
+                            continue;
+                        } else { ?>
                             <option value="<?= $dataCate['id']?>"><?= $dataCate['name']?></option>
-                <?php } ?>
+                <?php 
+                        }
+                    }
+                ?>
             </select>
         </div>
         <button type="submit" class="btn btn-success">Update</button>
